@@ -2,6 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+.container-note {
+  @apply w-full px-4 xl:px-32 pb-7;
+}
 .input {
-  @apply placeholder:text-secondary block bg-white border border-slate-300 rounded-md py-2 pl-5 pr-1 w-full mt-2 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm;
+  @apply block w-full py-2 pl-5 pr-1 mt-2 bg-white border rounded-md shadow-sm placeholder:text-secondary border-slate-300 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm dark:bg-slate-200;
+}
+.button-base {
+  @apply w-full border-t-[1px] border-r-[1px] border-primary font-bold py-1;
+}
+.item-note {
+  @apply grid gap-2 lg:grid-cols-4 md:grid-cols-2;
+}
+.note-empty {
+  @apply text-3xl font-semibold text-center text-red-600;
+}
+.heading-2 {
+  @apply pt-4 mb-5 text-2xl font-bold text-primary;
+}
+#mode-toggle:checked ~ label div.toggle-circle {
+  @apply translate-x-3;
 }

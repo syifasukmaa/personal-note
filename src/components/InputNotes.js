@@ -38,21 +38,38 @@ class InputNote extends React.Component {
     this.setState({ title: '', body: '' });
   }
 
-
   render() {
     return (
       <>
-        <form onSubmit={this.onSubmitHandler} >
-          <p className="text-sm font-semibold text-right text-secondary">Sisa Karakter: <span>{50 - this.state.title.length}</span></p>
+        <form onSubmit={this.onSubmitHandler}>
+          <p className="text-sm font-semibold text-right text-secondary">
+            Sisa Karakter: <span>{50 - this.state.title.length}</span>
+          </p>
 
-          <input className="input" placeholder="Ini adalah judul..." type="text" name="search" required value={this.state.title} onChange={this.onChangeTitleInput} />
+          <input
+            className="input"
+            placeholder="Ini adalah judul..."
+            type="text"
+            name="search"
+            required
+            value={this.state.title}
+            onChange={this.onChangeTitleInput}
+          />
 
-          <textarea className="input min-h-[175px]" placeholder="Tuliskan catatanmu disini..." required value={this.state.body} onChange={this.onChangeBodyInput}></textarea>
+          <textarea
+            className="input min-h-[175px]"
+            placeholder="Tuliskan catatanmu disini..."
+            required
+            value={this.state.body}
+            onChange={this.onChangeBodyInput}
+          ></textarea>
 
-          <button className="block w-full py-1 pl-5 pr-1 mt-2 font-semibold bg-white border rounded-md shadow-sm border-slate-300 sm:text-sm hover:bg-sky-500 hover:text-white" type="submit">
+          <button
+            className="block w-full py-1 pl-5 pr-1 mt-2 font-semibold bg-white border rounded-md shadow-sm dark:bg-slate-200 border-slate-300 sm:text-sm hover:bg-sky-500 hover:dark:bg-blue-800 hover:text-white"
+            type="submit"
+          >
             Buat
           </button>
-          
         </form>
       </>
     );
