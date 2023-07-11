@@ -14,6 +14,7 @@
 - Restore from archive note to active note
 - Search Note
 - Web Localstorage
+- Dark or Light Mode
 
 ## Configure
 Get the repo : 
