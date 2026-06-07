@@ -12,10 +12,13 @@ class App extends React.Component {
             searchQuery: "",
             notes: getInitialData(),
             darkMode: false,
+            activeNote: true,
+            archiveNote: false,
         };
         this.toggleDarkMode = this.toggleDarkMode.bind(this);
         this.allNoteList = this.allNoteList.bind(this);
         this.archiveNoteHandler = this.archiveNoteHandler.bind(this);
+        this.toggleActiveNote = this.toggleActiveNote.bind(this);
     }
 
     addNoteHandler = ({ title, body }) => {
@@ -123,6 +126,14 @@ class App extends React.Component {
             },
         );
     }
+
+    toggleActiveNote() {
+        this.setState((prevState) => ({
+            ...prevState,
+            activeNote: !prevState.activeNote,
+        }));
+    }
+
     componentDidMount() {
         const isDark = localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
@@ -145,25 +156,16 @@ class App extends React.Component {
                 notes: JSON.parse(localStorage.getItem("notes")),
             });
         }
+
     }
 
     render() {
         return (
             <>
                 <div className="w-full bg-slate-100 dark:bg-dark">
-                    <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center justify-between py-4 px-4 md:px-4 lg:px-28">
                         <h1 className="text-4xl font-bold text-sky-500">Notes</h1>
                         <div className="flex flex-row items-center gap-2 ">
-                            {/* <div className="flex mr-3">
-                <span className="mr-2 text-sm dark:text-slate-200">Light</span>
-                <input type="checkbox" className="hidden" id="mode-toggle" />
-                <label for="mode-toggle">
-                  <div className="flex items-center h-5 p-1 rounded-full cursor-pointer w-9 bg-slate-500">
-                    <div className="w-4 h-4 bg-white rounded-full toggle-circle"></div>
-                  </div>
-                </label>
-                <span className="ml-2 text-sm text-slate-200">Dark</span>
-              </div> */}
                             <button
                                 className={`flex items-center justify-center w-10 h-10  transition-all duration-300 mt-2  rounded-full dark:bg-dark300 hover:scale-105 ${this.state.darkMode ? "dark:bg-gray-300/10" : "bg-primary100/10"}`}
                                 onClick={() => this.toggleDarkMode()}
@@ -176,30 +178,43 @@ class App extends React.Component {
 
                     <hr className="w-full h-[2px] bg-gray-200 border-0 dark:bg-gray-800"></hr>
 
-                    <div className="w-full p-4 mx-auto md:w-3/4 xl:w-3/6">
+                    <div className="w-full p-4 mx-auto md:w-3/4 xl:w-3/6 border border-gray-300 rounded-xl mt-10 bg-white dark:bg-dark/20 dark:text-secondary drop-shadow-lg dark:drop-shadow-white ">
                         <h2 className="pt-4 text-2xl font-bold text-primary dark:text-secondary">Buat Catatan</h2>
 
                         <InputNote addNote={this.addNoteHandler} />
                     </div>
 
+                    {/* bikin switch toggle gitu */}
                     <div className="container-note">
-                        <h2 className="heading-2 dark:text-secondary">Catatan Aktif</h2>
-
-                        {this.allNoteList().filter((note) => !note.archived).length === 0 ? <h1 className="note-empty">Catatan Kosong</h1> : null}
-
-                        <div className="item-note">
-                            <NoteList listNote={this.allNoteList().filter((note) => !note.archived)} deleteNote={this.deleteNoteHandler} archiveNote={this.archiveNoteHandler} />
+                        <div className="flex items-center justify-center bg-primary w-[200px] h-10 mt-10 rounded-lg mb-2">
+                            <button className={`w-1/2 px-4 py-2 rounded-lg ${this.state.activeNote ? "bg-sky-500 text-white font-bold" : "bg-primary text-white text-xs"}`} onClick={() => this.toggleActiveNote()}>Aktif</button>
+                            <button className={`w-1/2 px-4 py-2 rounded-lg ${!this.state.activeNote ? "bg-sky-500 text-white font-bold" : "bg-primary/10 text-white text-xs"}`} onClick={() => this.toggleActiveNote()}>Arsip</button>
                         </div>
-                    </div>
 
-                    <div className="container-note">
-                        <h2 className="heading-2 dark:text-secondary">Arsip</h2>
 
-                        {this.allNoteList().filter((note) => note.archived).length === 0 ? <h1 className="note-empty">Tidak Ada Arsip</h1> : null}
+                        {
+                            this.state.activeNote ? (
+                                <div>
+                                    <h2 className="heading-2 dark:text-secondary">Catatan Aktif</h2>
 
-                        <div className="item-note">
-                            <NoteList listNote={this.allNoteList().filter((note) => note.archived)} deleteNote={this.deleteNoteHandler} archiveNote={this.archiveNoteHandler} />
-                        </div>
+                                    {this.allNoteList().filter((note) => !note.archived).length === 0 ? <h1 className="note-empty">Catatan Kosong</h1> : null}
+
+                                    <div className="item-note">
+                                        <NoteList listNote={this.allNoteList().filter((note) => !note.archived)} deleteNote={this.deleteNoteHandler} archiveNote={this.archiveNoteHandler} />
+                                    </div>
+                                </div>
+                            ) : (
+                                <div>
+                                    <h2 className="heading-2 dark:text-secondary">Arsip</h2>
+
+                                    {this.allNoteList().filter((note) => note.archived).length === 0 ? <h1 className="note-empty">Tidak Ada Arsip</h1> : null}
+
+                                    <div className="item-note">
+                                        <NoteList listNote={this.allNoteList().filter((note) => note.archived)} deleteNote={this.deleteNoteHandler} archiveNote={this.archiveNoteHandler} />
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </>
